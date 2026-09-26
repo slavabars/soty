@@ -120,9 +120,22 @@ WantedBy=multi-user.target
 | --- | --- | --- |
 | `dtm_host.app` | relay-хост (Linux x86-64, ~7.6 МБ) | `802f01ec83e8a3e9079d32752addf0392ba49741d995036c8d9e11ce94f4945a` |
 | `soty-release.apk` | Android-приложение (релиз, ~85 МБ) | `6927d6353af67942958c6314867031170f2e19f0b97efa1da27a7147899ee738` |
+| `soty-linux-x64.tar.gz` | Linux-десктоп (Ubuntu, GTK, x86-64, ~21 МБ) | `922ef10fe85a2df7d8813d4e006110e5d889f1393aa1321797ee3a0d778b36bc` |
 
 Это бинарный релиз без исходников. Исходный код — в закрытом репозитории; здесь
 публикуются только сборки, описание и инструкции.
+
+## Linux-десктоп (Ubuntu)
+
+Распаковать и запустить (GTK3-окружение):
+
+```bash
+tar -xzf soty-linux-x64.tar.gz
+./bundle/soty
+```
+
+Онлайн-p2p и relay-хост работают как в Android-версии; BLE/Wi-Fi Direct mesh
+на десктопе недоступен.
 
 ## Ограничения и заметки
 
