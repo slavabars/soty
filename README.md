@@ -123,8 +123,8 @@ WantedBy=multi-user.target
 | Файл | Что это | SHA-256 |
 | --- | --- | --- |
 | `dtm_host.app` | relay-хост (Linux x86-64, ~7.6 МБ) | `802f01ec83e8a3e9079d32752addf0392ba49741d995036c8d9e11ce94f4945a` |
-| `soty-release.apk` | Android-приложение (релиз, ~85 МБ) | `4eea9f69cab3be64369d297c4a61e6ec3d5988d362744f309a184f5e0fb8f1b7` |
-| `soty-linux-x64.tar.gz` | Linux-десктоп (Ubuntu, GTK, x86-64, ~21 МБ) | `922ef10fe85a2df7d8813d4e006110e5d889f1393aa1321797ee3a0d778b36bc` |
+| `soty-release.apk` | Android-приложение (релиз, ~89 МБ) | `3debce33fc67c643b6ee9799b572d9dde2e343690290f36cce3ec7b9e06b2e18` |
+| `soty-linux-x64.tar.gz` | Linux-десктоп (Ubuntu, GTK, x86-64, ~21 МБ) | `70d90a189dfc7dbff86f03aa78982f247c62acd7e13e5686a218bfed510d3e96` |
 
 Это бинарный релиз без исходников. Исходный код — в закрытом репозитории; здесь
 публикуются только сборки, описание и инструкции.
