@@ -215,9 +215,9 @@ WantedBy=multi-user.target
 | Файл | Что это | SHA-256 |
 | --- | --- | --- |
 | `dtm_host.app` | relay-хост (Linux x86-64, ~7.7 МБ, без изменений) | `13cf02e646514ad615f1b4892191f0cc9b67fc73938c79e132e272ad084c8703` |
-| `soty-release.apk` | Android-приложение 1.1.1+4 (релиз, ~86 МБ) | `00d4e75e4a0f2c58331f44250f3a0ad6043144fbd93a97f38529f9e0a0cd9c36` |
-| `soty-app-release.aab` | Android app bundle 1.1.1+4 (Google Play) | `366c4ca7679df14023a09d4f46315a1fb1fa87caa67b4d38758f9609a1338ffb` |
-| `soty-linux-x64.tar.gz` | Linux-десктоп 1.1.1+4 (Ubuntu, GTK, x86-64, ~21 МБ) | `0538dc1a1e254e12f4cd3f7ebee6e1e646122ffec337e97ecf0623e2b4cd0c85` |
+| `soty-release.apk` | Android-приложение 1.1.1+4 (релиз, ~86 МБ) | `d07083a5e619a9ce5834f3c8e91e49ec67ada5fa1afefa2cc66de51d906470a0` |
+| `soty-app-release.aab` | Android app bundle 1.1.1+4 (Google Play) | `e0b2e8da3d031e73f90a4686f50425a2d924a8383990012ce5c312da73808090` |
+| `soty-linux-x64.tar.gz` | Linux-десктоп 1.1.1+4 (Ubuntu, GTK, x86-64, ~21 МБ) | `7ad4e0699f2ed9738a841acf5bd18426aaab7c5278b9231b3ace46cdbf5cb7a2` |
 
 Это бинарный релиз без исходников. Исходный код — в закрытом репозитории; здесь
 публикуются только сборки, описание и инструкции.
