@@ -1,0 +1,14 @@
+[Unit]
+Description=Soty relay host + tracker (@@NAME@@)
+Documentation=https://github.com/slavabars/soty
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=@@BIN@@ --db @@DB@@ --listen @@LISTEN@@ --port @@PORT@@@@EXTRA@@
+Restart=@@RESTART@@
+RestartSec=5
+
+[Install]
+WantedBy=default.target
