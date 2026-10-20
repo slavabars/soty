@@ -477,9 +477,9 @@ WantedBy=multi-user.target
 | Файл | Что это | SHA-256 |
 | --- | --- | --- |
 | `dtm_host.bin` | relay-хост (Linux x86-64, ~7.7 МБ, без изменений) | `13cf02e646514ad615f1b4892191f0cc9b67fc73938c79e132e272ad084c8703` |
-| `soty-release.apk` | Android-приложение 1.4.0+11 (релиз, ~86 МБ) | `decf9bbb366d1ea2c59a36c56f6005c0bd65f1db8cd8252c68c655f673a37462` |
-| `soty-app-release.aab` | Android app bundle 1.4.0+11 (Google Play) | `76bbcdc583023915e77e727164b965f9f26a9a93fd35bb90a561d67e7a60d99d` |
-| `soty-linux-x64.tar.gz` | Linux-десктоп 1.4.0+11 (Ubuntu, GTK, x86-64, ~20 МБ) | `8943c176ac3ff1519d473e508ff639847dc5ed6d71a73297aacace1b65b985a7` |
+| `soty-release.apk` | Android-приложение 1.4.0+11 (релиз, ~86 МБ) | `2ecfff7c88a999411128af23bcef10670f9034dcb66008824dbfa285836a61eb` |
+| `soty-app-release.aab` | Android app bundle 1.4.0+11 (Google Play) | `1ef3058cc5842a3c90ddcea39aebbcd3867a2fa8abe1091bb76493ba3a28160c` |
+| `soty-linux-x64.tar.gz` | Linux-десктоп 1.4.0+11 (Ubuntu, GTK, x86-64, ~20 МБ) | `a0efb0451dfd64ebb6c6bc25c9c0fd518371aad661a2d556d17a731924c6a2d5` |
 
 Хост в этом релизе байт-в-байт совпадает с предыдущим (та же контрольная
 сумма): код хоста не менялся, ни протокол, ни формат конвертов, поэтому
