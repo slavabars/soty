@@ -12,7 +12,10 @@ Soty — децентрализованный текстовый мессенд�
 | Путь | Что это |
 | --- | --- |
 | `README.md` | Описание проекта и инструкция по деплою релей-хостов |
-| `scripts/deploy-host.sh` | Установка/обновление релея на обычном Linux-сервере (systemd --user) |
+| `scripts/install-relay.sh` | Установка на Linux: автоопределение дистрибутива, root или пользователь |
+| `scripts/install-relay-macos.sh` | Установка на macOS через Docker/Colima (без admin) |
+| `scripts/install-relay-windows.ps1` | Установка на Windows через Docker Desktop (без admin) |
+| `scripts/deploy-host.sh` | Установка/обновление релея на обычном Linux-сервере по SSH (systemd --user) |
 | `scripts/deploy-relay2.sh` | Установка/обновление релея на shared-хостинге (shell-супервизор + nginx) |
 | `scripts/host_probe.py` | Проверка живого релея тем же handshake, что делает приложение |
 | `scripts/soty-ws-nginx-location.conf` | nginx location для WebSocket-прокси релея |
@@ -38,15 +41,79 @@ Linux-десктоп, бинарник `dtm_host`) публикуются тол
 
 ## Требования к серверу релея
 
-- Linux x86_64, пользователь без root.
-- `libsqlite3` (Alma/RHEL: `dnf install -y sqlite-libs`; Debian/Ubuntu:
-  `apt-get install -y libsqlite3-0`).
+- Linux x86_64 — основной вариант (root или обычный пользователь).
+- macOS (Intel/Apple Silicon) и Windows — только через Docker: готовый
+  `dtm_host.bin` собран под Linux x86_64. Установщики сами собирают маленький
+  контейнер `debian:bookworm-slim` с `libsqlite3` и запускают релей.
+- `libsqlite3` на Linux (Alma/RHEL: `dnf install -y sqlite-libs`;
+  Debian/Ubuntu: `apt-get install -y libsqlite3-0`). Установщик Linux ставит
+  зависимость сам, если запущен от root.
 - Системный `systemctl --user` (для релея #1) **или** nginx + cron (для
-  shared-хостинга, релей #2).
+  shared-хостинга, релей #2). Если systemd нет, Linux-установщик использует
+  shell-супервизор + `@reboot` в crontab.
 - Открытый порт (обычно 3100) либо TLS-прокси в nginx на 80/443.
 - Бинарник `dtm_host` из раздела Releases. В релизе он называется
-  `dtm_host.bin`; переименуйте в `dtm_host.app` (это обычный ELF, расширение
-  ни на что не влияет).
+  `dtm_host.bin`; переименовывать не нужно — установщики делают это сами.
+
+## Быстрая установка на машине релея
+
+Установщики скачивают актуальный `dtm_host.bin` из GitHub Releases,
+проверяют SHA-256 по GitHub API, ставят зависимости и запускают сервис.
+Повторный запуск обновляет бинарник, **`host.db` не трогается**, поэтому
+Ed25519-идентичность и пины клиентов сохраняются.
+
+Linux — автоопределение дистрибутива (apt/dnf/yum/pacman/zypper/apk) и
+архитектуры. Root-режим ставит system-сервис от пользователя `soty`;
+пользовательский режим — `systemd --user`, а если его нет, супервизор в
+`~/.local/share/soty`:
+
+```bash
+# системная установка
+curl -fsSL https://raw.githubusercontent.com/slavabars/soty/main/scripts/install-relay.sh \
+  | sudo bash -s -- --port 3100 --announce wss://relay.example.com/soty-ws
+
+# без root
+curl -fsSL https://raw.githubusercontent.com/slavabars/soty/main/scripts/install-relay.sh \
+  | bash -s -- --port 3100 --announce wss://relay.example.com/soty-ws
+```
+
+macOS — Docker Desktop или Colima, всё работает без admin. Если Docker ещё
+нет, поставьте его этим же скриптом через Homebrew:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/slavabars/soty/main/scripts/install-relay-macos.sh \
+  | bash -s -- --install-docker --port 3100 \
+      --announce wss://relay.example.com/soty-ws
+```
+
+Windows — Docker Desktop, без admin, если Docker уже стоит:
+
+```powershell
+$dst = "$env:TEMP\install-relay-windows.ps1"
+iwr https://raw.githubusercontent.com/slavabars/soty/main/scripts/install-relay-windows.ps1 -UseBasicParsing -OutFile $dst
+powershell -ExecutionPolicy Bypass -File $dst -Port 3100 -Announce wss://relay.example.com/soty-ws
+# поставить Docker Desktop (нужен PowerShell от администратора):
+powershell -ExecutionPolicy Bypass -File $dst -InstallDocker
+```
+
+Полезные флаги Linux/macOS (Windows — аналогичные параметры `-Port`,
+`-Announce`, `-Peer`, `-Version`, `-Uninstall`, `-Purge`):
+
+| Флаг | Значение |
+| --- | --- |
+| `--port`, `--listen` | порт и адрес bind (default `3100`, `0.0.0.0`) |
+| `--announce` | публичный `ws://…/ws` или `wss://…` для invite |
+| `--peer SPEC` | пир федерации, можно повторять |
+| `--version X.Y.Z+N` | конкретная версия вместо latest |
+| `--url URL` | прямой URL на `dtm_host.bin` |
+| `--no-verify` | не проверять SHA-256 |
+| `--no-service` | только скачать/установить, без запуска |
+| `--uninstall [--purge]` | удалить сервис; `--purge` — вместе с `host.db` |
+
+После установки скрипт печатает `ed25519` и готовую invite-ссылку. На Linux
+root-режим: `systemctl status soty-host`, `journalctl -u soty-host -f`; без
+root: `systemctl --user status soty-host` (включите
+`loginctl enable-linger $USER`). На macOS/Windows: `docker logs -f soty-host`.
 
 ## Релей #1 — обычный Linux-сервер (systemd --user)
 
@@ -244,16 +311,28 @@ python3 scripts/host_probe.py \
 
 ## Обновление релеев
 
-1. Возьмите новый `dtm_host.bin` из Releases (или соберите из исходников —
-   их в этом репозитории нет).
-2. Обновите **оба** узла, иначе они разойдутся по версии протокола:
+1. Проще всего повторить установщик на каждой машине: он скачает свежий
+   `dtm_host.bin`, проверит SHA-256 и перезапустит сервис. `host.db` при этом
+   не меняется, Ed25519-идентичность сохраняется:
+
+```bash
+# Linux
+sudo ./scripts/install-relay.sh --announce wss://relay.example.com/soty-ws
+# macOS
+./scripts/install-relay-macos.sh --announce wss://relay.example.com/soty-ws
+# Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File .\install-relay-windows.ps1 -Announce wss://relay.example.com/soty-ws
+```
+
+2. Либо обновите по SSH старыми скриптами:
 
 ```bash
 ./scripts/deploy-host.sh --user dtm --host 85.198.75.50 --invite-json
 ./scripts/deploy-relay2.sh
 ```
 
-3. Проверьте оба релея через `host_probe.py` / `--check`.
+3. Обновите **оба** узла, иначе они разойдутся по версии протокола, и
+   проверьте каждый через `host_probe.py` / `--check`.
 
 ## Эксплуатация и безопасность
 
