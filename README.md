@@ -56,6 +56,7 @@ user-systemd-сервис `soty-host.service` и печатает invite-ссы�
 
 ```bash
 # бинарник из Releases
+mkdir -p build-artifacts
 curl -L -o build-artifacts/dtm_host.app \
   https://github.com/slavabars/soty/releases/latest/download/dtm_host.bin
 chmod +x build-artifacts/dtm_host.app
@@ -95,6 +96,9 @@ export SSH_ASKPASS=/tmp/askpass.sh SSH_ASKPASS_REQUIRE=force DISPLAY=:0
 ssh dtm@85.198.75.50 'systemctl --user status soty-host'
 ssh dtm@85.198.75.50 'journalctl --user -u soty-host -n 50 --no-pager'
 ```
+
+Чтобы user-сервис не останавливался после выхода из SSH, включите lingering
+(один раз, от root): `loginctl enable-linger dtm`.
 
 Invite-ссылка выглядит так:
 
