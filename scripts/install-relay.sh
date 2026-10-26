@@ -86,10 +86,14 @@ done
 
 [ "$(uname -s)" = "Linux" ] || die "этот установщик только для Linux (macOS: install-relay-macos.sh, Windows: install-relay-windows.ps1)"
 
+if ldd --version 2>&1 | grep -qi musl || ls /lib/ld-musl-* >/dev/null 2>&1; then
+  die "Alpine/musl не поддерживается: готовый dtm_host требует glibc. Используй Debian/Ubuntu/RHEL/SUSE/Arch или Docker-вариант"
+fi
+
 ARCH="$(uname -m)"
 case "$ARCH" in
   x86_64|amd64) ;;
-  *) die "для $ARCH нет готового бинарника: релиз собирается под Linux x86_64" ;;
+  *) die "для $ARCH нет готового бинарника: релиз собирается под Linux x86_64 (на ARM используй Docker-вариант)" ;;
 esac
 
 if [ -z "$MODE" ]; then
