@@ -132,7 +132,8 @@ sqlite_lib_present() {
 sqlite_pkg() {
   case "$PKG" in
     apt-get) echo "libsqlite3-0" ;;
-    dnf|yum) echo "sqlite-libs" ;;
+    dnf) echo "sqlite-libs" ;;
+    yum) echo "sqlite" ;;
     pacman) echo "sqlite" ;;
     zypper) echo "sqlite3" ;;
     apk) echo "sqlite-libs" ;;
