@@ -107,6 +107,12 @@ if (-not (Test-Docker)) {
     if (-not (Start-DockerDaemon)) { Fail "Docker daemon не запущен" }
 }
 
+$osType = ""
+try { $osType = (& docker info --format "{{.OSType}}" 2>$null | Out-String).Trim() } catch { }
+if ($osType -and $osType -ne "linux") {
+    Fail "Docker Desktop работает в режиме Windows containers; переключи его на Linux containers"
+}
+
 if ($Uninstall) {
     Invoke-Uninstall
     exit 0
