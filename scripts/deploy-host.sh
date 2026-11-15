@@ -27,6 +27,7 @@ usage() {
   --app PATH              локальный dtm_host.app      (default: ../build-artifacts/dtm_host.app)
   --listen IP             bind: 0.0.0.0 / 127.0.0.1   (default: 0.0.0.0)
   --port PORT             bind-порт                   (default: 3100)
+  --announce URL          публичный ws(s)://…/ws адрес (default: ws://HOST:PORT/ws)
   --name NAME             имя unit'а                  (default: soty-host)
   --remote-dir DIR        каталог бинаря на сервере   (default: ~/local)
   --unit-only             только (пере)создать unit, не перезаливать бинарь
@@ -42,6 +43,7 @@ EOF
 APP="../build-artifacts/dtm_host.app"
 LISTEN="0.0.0.0"
 PORT=3100
+ANNOUNCE=""
 NAME="soty-host"
 UNIT_ONLY=0
 RESTART="on-failure"
@@ -58,6 +60,7 @@ while [ $# -gt 0 ]; do
     --app)  APP="$2";  shift 2;;
     --listen) LISTEN="$2"; shift 2;;
     --port) PORT="$2"; shift 2;;
+    --announce) ANNOUNCE="$2"; shift 2;;
     --name) NAME="$2"; shift 2;;
     --remote-dir) REMOTE_DIR="$2"; shift 2;;
     --db-dir) DB_DIR="$2"; shift 2;;
@@ -71,6 +74,7 @@ done
 
 [ -n "$USER" ] || die "--user обязателен"
 [ -n "$HOST" ] || die "--host обязателен"
+[ -n "$ANNOUNCE" ] || ANNOUNCE="ws://$HOST:$PORT/ws"
 
 SSH_DEST="$USER@$HOST"
 ssh() { command ssh -o ConnectTimeout=15 -o StrictHostKeyChecking=accept-new "$SSH_DEST" "$@"; }
@@ -96,8 +100,11 @@ ssh 'mkdir -p' "$(printf '%q' "$CMD_DIR")" "$(printf '%q' "$DATA_DIR")"
 # --- копирование бинаря ---
 if [ "$UNIT_ONLY" -eq 0 ]; then
   [ -f "$APP" ] || die "нет бинаря: $APP (сначала: flutter build / dart compile)"
-  echo "==> копирую $APP -> $SSH_DEST:$CMD_DIR/dtm_host.app"
-  command scp -o ConnectTimeout=15 -o StrictHostKeyChecking=accept-new "$APP" "$SSH_DEST:$CMD_DIR/dtm_host.app" || die "scp не удался"
+  echo "==> копирую $APP -> $SSH_DEST:$CMD_DIR/dtm_host.app.new"
+  # Upload beside the running binary and swap with rename: scp directly over
+  # a running executable fails with ETXTBSY on Linux.
+  command scp -o ConnectTimeout=15 -o StrictHostKeyChecking=accept-new "$APP" "$SSH_DEST:$CMD_DIR/dtm_host.app.new" || die "scp не удался"
+  ssh "mv -f $(printf '%q' "$CMD_DIR/dtm_host.app.new") $(printf '%q' "$CMD_DIR/dtm_host.app") && chmod 700 $(printf '%q' "$CMD_DIR/dtm_host.app")" || die "не удалось заменить бинарь"
 fi
 
 # --- systemd-user unit ---
@@ -108,7 +115,7 @@ Description=Soty relay host + tracker
 After=network.target
 
 [Service]
-ExecStart=%h/local/dtm_host.app --db %h/soty/host.db --listen $LISTEN --port $PORT
+ExecStart=%h/local/dtm_host.app --db %h/soty/host.db --listen $LISTEN --port $PORT --announce $ANNOUNCE
 Restart=$RESTART
 RestartSec=5
 
@@ -144,7 +151,7 @@ if [ -z "$BANNER" ]; then
   BANNER="НЕИЗВЕСТНО"
 fi
 
-ADDR="ws://$HOST:$PORT/ws"
+ADDR="$ANNOUNCE"
 INVITE="soty://host?addr=$(python3 - <<PYEOF
 import urllib.parse; print(urllib.parse.quote("$ADDR", safe=""))
 PYEOF

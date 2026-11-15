@@ -118,9 +118,12 @@ root: `systemctl --user status soty-host` (включите
 
 ## Релей #1 — обычный Linux-сервер (systemd --user)
 
-`scripts/deploy-host.sh` копирует бинарник по SSH, проверяет `libsqlite3`,
-кладёт его в `~/local/`, базу — в `~/soty/host.db`, создаёт и запускает
-user-systemd-сервис `soty-host.service` и печатает invite-ссылку.
+`scripts/deploy-host.sh` заливает новый бинарник рядом с работающим
+(`dtm_host.app.new`), заменяет его переименованием и перезапускает сервис —
+поэтому обновление не упирается в занятый файл (ETXTBSY) и не требует
+останавливать релей вручную. Скрипт проверяет `libsqlite3`, кладёт бинарник в
+`~/local/`, базу — в `~/soty/host.db`, создаёт user-systemd-сервис
+`soty-host.service` с `--announce` и печатает invite-ссылку.
 
 ```bash
 # бинарник из Releases
@@ -152,9 +155,11 @@ export SSH_ASKPASS=/tmp/askpass.sh SSH_ASKPASS_REQUIRE=force DISPLAY=:0
 | `--user`, `--host` | SSH-пользователь и сервер (обязательны) |
 | `--app PATH` | локальный бинарник (по умолчанию `../build-artifacts/dtm_host.app`) |
 | `--listen`, `--port` | адрес и порт bind (по умолчанию `0.0.0.0:3100`) |
+| `--announce URL` | публичный `ws://…/ws` или `wss://…` (по умолчанию `ws://HOST:PORT/ws`) |
 | `--name` | имя systemd-юнита (по умолчанию `soty-host`) |
 | `--remote-dir` | каталог бинарника (по умолчанию `~/local`) |
 | `--unit-only` | только пересоздать юнит, не заливать бинарник |
+| `--restart-on-fail` | `Restart=on-failure` (по умолчанию) |
 | `--no-restart` | не перезапускать сервис |
 | `--invite-json` | вывести endpoint/ed25519/invite как JSON |
 
