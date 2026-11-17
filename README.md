@@ -18,7 +18,7 @@ Soty — децентрализованный текстовый мессенд�
 | `scripts/deploy-host.sh` | Установка/обновление релея на обычном Linux-сервере по SSH (systemd --user) |
 | `scripts/deploy-relay2.sh` | Установка/обновление релея на shared-хостинге (shell-супервизор + nginx) |
 | `scripts/host_probe.py` | Проверка живого релея тем же handshake, что делает приложение |
-| `scripts/soty-ws-nginx-location.conf` | nginx location для WebSocket-прокси релея |
+| `scripts/soty-ws-nginx-location.conf` | nginx location для WebSocket, `/soty-status` и `/soty-directory` релея |
 
 Исходного кода приложения здесь нет. Готовые дистрибутивы (Android APK/AAB,
 Linux-десктоп, бинарник `dtm_host`) публикуются только в
@@ -228,7 +228,32 @@ location = /soty-ws {
     proxy_read_timeout 3600s;
     proxy_send_timeout 3600s;
 }
+
+location = /soty-status {
+    limit_except GET { deny all; }
+    proxy_pass http://127.0.0.1:3100/status;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
+}
+
+location = /soty-directory {
+    limit_except GET { deny all; }
+    proxy_pass http://127.0.0.1:3100/directory;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
+}
 ```
+
+`/soty-status` отдаёт агрегаты для публичной таблицы `soty.su/status`, а
+`/soty-directory` — каталог федерации, из которого сайт сам находит новые
+релеи. Без этих двух location релей виден в таблице, но без метрик и
+собственного каталога.
 
 Типовой `server{}` с TLS-терминацией:
 
