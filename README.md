@@ -329,7 +329,7 @@ server {
 
 ```bash
 python3 scripts/host_probe.py \
-  ws://77.246.145.113:3100/ws \
+  wss://soty.su/soty-ws \
   fad55cc762eda3f6cbc9c6522030ce8ec29e87143c9c78f452038d24143a4e82
 
 python3 scripts/host_probe.py \
@@ -358,7 +358,7 @@ powershell -ExecutionPolicy Bypass -File .\install-relay-windows.ps1 -Announce w
 2. Либо обновите по SSH старыми скриптами:
 
 ```bash
-./scripts/deploy-host.sh --user dtm --host 77.246.145.113 --invite-json
+./scripts/deploy-host.sh --user dtm --host 77.246.145.113 --announce wss://soty.su/soty-ws --invite-json
 ./scripts/deploy-relay2.sh
 ```
 
