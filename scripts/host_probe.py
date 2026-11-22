@@ -5,7 +5,7 @@ Verifies that a relay endpoint is reachable and that the Ed25519 identity it
 answers with is the expected one — the same check the app performs when it
 pins a host, so a green run here means a device will accept the invite.
 
-    scripts/host_probe.py ws://85.198.75.50:3100/ws fad55cc7…4e82
+    scripts/host_probe.py ws://77.246.145.113:3100/ws fad55cc7…4e82
     scripts/host_probe.py wss://price.dcns.ru/soty-ws dba88ecc…b014
 
 Exit code 0 only when the identity matches. Works for ws:// and wss:// (the

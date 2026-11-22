@@ -24,7 +24,7 @@ set -euo pipefail
 #   ./scripts/deploy-relay2.sh --app ../build-artifacts/dtm_host.app
 
 ANNOUNCE="wss://price.dcns.ru/soty-ws"
-SEED="ws://85.198.75.50:3100/ws|fad55cc762eda3f6cbc9c6522030ce8ec29e87143c9c78f452038d24143a4e82"
+SEED="ws://77.246.145.113:3100/ws|fad55cc762eda3f6cbc9c6522030ce8ec29e87143c9c78f452038d24143a4e82"
 EXPECT_ED="dba88ecc7cd8053f76ddbe9c29d0bf63bb24e6234ebcaf9c074dcb0a1ce4b014"
 REMOTE="soty-relay2"
 REMOTE_DIR="dtm"
@@ -171,7 +171,7 @@ cat <<EOF
     ed25519            $ED
     invite             soty://host?addr=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1],safe=''))" "$ANNOUNCE")&pk=$ED
 
-    Не забудь про основной релей 85.198.75.50:3100 — он обновляется
+    Не забудь про основной релей 77.246.145.113:3100 — он обновляется
     scripts/deploy-host.sh (systemd-user) и его ПК не меняется:
     fad55cc762eda3f6cbc9c6522030ce8ec29e87143c9c78f452038d24143a4e82
 EOF

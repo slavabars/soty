@@ -141,7 +141,7 @@ chmod +x /tmp/askpass.sh
 export SSH_ASKPASS=/tmp/askpass.sh SSH_ASKPASS_REQUIRE=force DISPLAY=:0
 
 ./scripts/deploy-host.sh \
-  --user dtm --host 85.198.75.50 \
+  --user dtm --host 77.246.145.113 \
   --listen 0.0.0.0 --port 3100 \
   --app build-artifacts/dtm_host.app
 ```
@@ -166,8 +166,8 @@ export SSH_ASKPASS=/tmp/askpass.sh SSH_ASKPASS_REQUIRE=force DISPLAY=:0
 После установки:
 
 ```bash
-ssh dtm@85.198.75.50 'systemctl --user status soty-host'
-ssh dtm@85.198.75.50 'journalctl --user -u soty-host -n 50 --no-pager'
+ssh dtm@77.246.145.113 'systemctl --user status soty-host'
+ssh dtm@77.246.145.113 'journalctl --user -u soty-host -n 50 --no-pager'
 ```
 
 Чтобы user-сервис не останавливался после выхода из SSH, включите lingering
@@ -176,7 +176,7 @@ ssh dtm@85.198.75.50 'journalctl --user -u soty-host -n 50 --no-pager'
 Invite-ссылка выглядит так:
 
 ```text
-soty://host?addr=ws%3A%2F%2F85.198.75.50%3A3100%2Fws&pk=<ed25519-hex>
+soty://host?addr=ws%3A%2F%2F77.246.145.113%3A3100%2Fws&pk=<ed25519-hex>
 ```
 
 Её можно вшивать в приложение или импортировать в настройках «Relay hosts».
@@ -329,7 +329,7 @@ server {
 
 ```bash
 python3 scripts/host_probe.py \
-  ws://85.198.75.50:3100/ws \
+  ws://77.246.145.113:3100/ws \
   fad55cc762eda3f6cbc9c6522030ce8ec29e87143c9c78f452038d24143a4e82
 
 python3 scripts/host_probe.py \
@@ -358,7 +358,7 @@ powershell -ExecutionPolicy Bypass -File .\install-relay-windows.ps1 -Announce w
 2. Либо обновите по SSH старыми скриптами:
 
 ```bash
-./scripts/deploy-host.sh --user dtm --host 85.198.75.50 --invite-json
+./scripts/deploy-host.sh --user dtm --host 77.246.145.113 --invite-json
 ./scripts/deploy-relay2.sh
 ```
 

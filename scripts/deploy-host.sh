@@ -12,10 +12,10 @@ set -euo pipefail
 #
 # Пример:
 #   ./deploy-host.sh \
-#     --user dtm --host 85.198.75.50                        \
+#     --user dtm --host 77.246.145.113                        \
 #     --listen 0.0.0.0 --port 3100                          \
 #     --app  ../build-artifacts/dtm_host.app
-#   ./deploy-host.sh --user dtm --host 85.198.75.50 --invite-json
+#   ./deploy-host.sh --user dtm --host 77.246.145.113 --invite-json
 
 die() { echo "error: $*" >&2; exit 1; }
 usage() {
