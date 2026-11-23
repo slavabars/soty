@@ -220,6 +220,7 @@ location = /soty-ws {
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
+    proxy_pass_header Upgrade;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -270,6 +271,7 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+        proxy_pass_header Upgrade;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -292,6 +294,12 @@ server {
 - `proxy_read_timeout 3600s` обязателен: дефолтные 60 s рвут простаивающую
   подписку каждую минуту.
 - `proxy_http_version 1.1` + `Upgrade`/`Connection` включают WebSocket.
+
+- Если nginx стоит перед Apache/Hestia, шаблон vhost часто содержит
+  `proxy_hide_header Upgrade;`: добавьте в `location = /soty-ws` строку
+  `proxy_pass_header Upgrade;`. Иначе `curl`/`host_probe` видят `101`, а
+  Dart-клиент приложения падает на `Null check operator` и релей выглядит
+  неподключённым.
 - Если :80 отвечает редиректом на :443, публичный адрес релея должен быть
   только `wss://`; `ws://` на :80 работать не будет.
 - Если релей выключен, прокси вернёт 502 — сам сайт при этом не страдает.
