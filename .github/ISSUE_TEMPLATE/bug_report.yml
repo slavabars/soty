@@ -5,8 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Do not report security problems here.** Use the private advisory link
-        from `SECURITY.md`. Never paste keys or envelope contents.
+        **Do not report security problems here.** Use the private advisory link from `SECURITY.md`. Never paste keys or envelope contents.
   - type: input
     id: version
     attributes:
