@@ -1,30 +1,32 @@
-# Security policy
+# Политика безопасности
 
-This repository holds the project description, the relay installers and the official release binaries. The app source is [soty-app](https://github.com/slavabars/soty-app) and the relay source is [soty-relay](https://github.com/slavabars/soty-relay).
+**Русский** · [English](SECURITY.en.md)
 
-**Please do not open a public issue for a security problem.**
+Этот репозиторий содержит описание проекта, установщики релея и официальные бинарники релизов. Исходники приложения — в [soty-app](https://github.com/slavabars/soty-app), исходники релея — в [soty-relay](https://github.com/slavabars/soty-relay).
 
-## Reporting
+**Не открывайте публичный issue для проблемы безопасности.**
 
-Preferred: GitHub private vulnerability reporting: <https://github.com/slavabars/soty/security/advisories/new>
+## Как сообщить об уязвимости
 
-Alternative: email **security@soty.su**.
+Предпочтительно — приватный отчёт GitHub: <https://github.com/slavabars/soty/security/advisories/new>
 
-Include the affected version (`X.Y.Z+N`), platform, impact and reproduction steps. Never paste message content, keys or seeds.
+Альтернатива — письмо на **security@soty.su**.
 
-## In scope
+Укажите затронутую версию (`X.Y.Z+N`), платформу, последствия и шаги воспроизведения. Никогда не вставляйте содержимое сообщений, ключи или seeds.
 
-- the installers and deploy scripts (`scripts/`) doing something unsafe: downloading without a checksum, overwriting `host.db`, running as root unnecessarily, following a redirect to a non-GitHub host;
-- a release artifact that does not match the published SHA-256;
-- an official APK signed by an unexpected certificate;
-- a compromised or spoofed release.
+## Что входит в область
 
-## Out of scope
+- установщики и скрипты деплоя (`scripts/`) делают что-то небезопасное: скачивают без контрольной суммы, перезаписывают `host.db`, запускаются от root без необходимости, следуют редиректу на не-GitHub хост;
+- артефакт релиза не совпадает с опубликованным SHA-256;
+- официальный APK подписан неожиданным сертификатом;
+- скомпрометированный или подменённый релиз.
 
-- vulnerabilities in the app or relay code — report those in the matching repository;
-- a relay you operate yourself being flooded;
-- metadata a relay inherently sees.
+## Что не входит в область
 
-## Response
+- уязвимости в коде приложения или релея — сообщайте в соответствующий репозиторий;
+- перегрузка релея, которым вы управляете сами;
+- метаданные, которые релей видит по определению.
 
-Acknowledgement within 7 days, an assessment within 14, a fix and a release as soon as practical. Please allow time to ship before publishing details.
+## Ответ
+
+Подтверждение в течение 7 дней, оценка в течение 14, исправление и релиз как можно скорее. Пожалуйста, дайте время на выпуск исправления до публикации деталей.

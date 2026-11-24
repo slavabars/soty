@@ -25,7 +25,7 @@ jobs:
           fail=0
           while IFS= read -r p; do
             case "$p" in
-              README.md|SECURITY.md) ;;
+              README.md|README.en.md|SECURITY.md|SECURITY.en.md) ;;
               .github/*) ;;
               scripts/install-relay.sh) ;;
               scripts/install-relay-macos.sh) ;;
