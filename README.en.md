@@ -13,10 +13,10 @@ The code is split into separate repositories so the app, the relay and the websi
 | Repository | What it is | Access |
 | --- | --- | --- |
 | **soty** (this one) | Project description, relay install and deploy, releases | public |
-| [`soty-app`](https://github.com/slavabars/soty-app) | Client source (Flutter: Android, Linux, macOS) | publication pending |
-| [`soty-relay`](https://github.com/slavabars/soty-relay) | Relay host `dtm_host` source | publication pending |
+| [`soty-app`](https://github.com/slavabars/soty-app) | Client source (Flutter: Android, Linux, macOS) | public |
+| [`soty-relay`](https://github.com/slavabars/soty-relay) | Relay host `dtm_host` source | public |
 
-The source is published separately on purpose: it goes through a security audit and a secret-leak check first, and only then becomes public.
+The source is published separately: it has passed the security audit and the secret-leak check, so the app, the relay and the website live in their own repositories with different visibility.
 
 ## What is in this repository
 
@@ -31,7 +31,7 @@ The source is published separately on purpose: it goes through a security audit 
 | `scripts/host_probe.py` | Check a live relay with the same handshake the app uses |
 | `scripts/soty-ws-nginx-location.conf` | nginx location for the relay WebSocket, `/soty-status` and `/soty-directory` |
 
-The app and relay source is not here: it is published in [`soty-app`](https://github.com/slavabars/soty-app) and [`soty-relay`](https://github.com/slavabars/soty-relay) after the audit. Ready-made builds (Android APK/AAB, Linux desktop, the `dtm_host` binary) are published only in [Releases](https://github.com/slavabars/soty/releases). This repository intentionally contains only the project description and the relay-host deployment tooling.
+The app and relay source is not here: it lives in [`soty-app`](https://github.com/slavabars/soty-app) and [`soty-relay`](https://github.com/slavabars/soty-relay). Ready-made builds (Android APK/AAB, Linux desktop, the `dtm_host` binary) are published only in [Releases](https://github.com/slavabars/soty/releases). This repository intentionally contains only the project description and the relay-host deployment tooling.
 
 ## How federation works
 

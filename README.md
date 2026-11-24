@@ -13,10 +13,10 @@ Soty — децентрализованный текстовый мессенд�
 | Репозиторий | Что это | Доступ |
 | --- | --- | --- |
 | **soty** (этот) | Описание проекта, установка и деплой релеев, релизы | публичный |
-| [`soty-app`](https://github.com/slavabars/soty-app) | Исходный код клиента (Flutter: Android, Linux, macOS) | готовится к публикации |
-| [`soty-relay`](https://github.com/slavabars/soty-relay) | Исходный код релей-хоста `dtm_host` | готовится к публикации |
+| [`soty-app`](https://github.com/slavabars/soty-app) | Исходный код клиента (Flutter: Android, Linux, macOS) | публичный |
+| [`soty-relay`](https://github.com/slavabars/soty-relay) | Исходный код релей-хоста `dtm_host` | публичный |
 
-Исходный код намеренно публикуется отдельно: сначала он проходит аудит безопасности и проверку на утечки секретов, и только потом открывается.
+Исходный код публикуется отдельно: он прошёл аудит безопасности и проверку на утечки секретов, поэтому приложение, релей и сайт живут в своих репозиториях с разной видимостью.
 
 ## Что лежит в этом репозитории
 
@@ -31,7 +31,7 @@ Soty — децентрализованный текстовый мессенд�
 | `scripts/host_probe.py` | Проверка живого релея тем же handshake, что делает приложение |
 | `scripts/soty-ws-nginx-location.conf` | nginx location для WebSocket, `/soty-status` и `/soty-directory` релея |
 
-Исходного кода приложения и релея здесь нет: он публикуется в [`soty-app`](https://github.com/slavabars/soty-app) и [`soty-relay`](https://github.com/slavabars/soty-relay) после аудита. Готовые дистрибутивы (Android APK/AAB, Linux-десктоп, бинарник `dtm_host`) публикуются только в [Releases](https://github.com/slavabars/soty/releases). Этот репозиторий намеренно содержит только описание проекта и средства деплоя релей-хостов.
+Исходного кода приложения и релея здесь нет: он лежит в [`soty-app`](https://github.com/slavabars/soty-app) и [`soty-relay`](https://github.com/slavabars/soty-relay). Готовые дистрибутивы (Android APK/AAB, Linux-десктоп, бинарник `dtm_host`) публикуются только в [Releases](https://github.com/slavabars/soty/releases). Этот репозиторий намеренно содержит только описание проекта и средства деплоя релей-хостов.
 
 ## Как устроена федерация
 
