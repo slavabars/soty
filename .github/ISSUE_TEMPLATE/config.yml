@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/slavabars/soty/security/advisories/new
+    about: Report privately. Never open a public issue for a security problem.
+  - name: App issue
+    url: https://github.com/slavabars/soty-app/issues/new/choose
+    about: Bugs in the client app.
+  - name: Relay source issue
+    url: https://github.com/slavabars/soty-relay/issues/new/choose
+    about: Bugs in dtm_host itself.

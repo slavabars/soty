@@ -1,0 +1,49 @@
+name: Repository invariants
+
+# Guards the publication rule: this repository carries the README, the security
+# policy, GitHub metadata and the relay installer scripts — and nothing else.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  allowed-paths:
+    name: only allowed paths
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tracked paths
+        run: |
+          set -euo pipefail
+          fail=0
+          while IFS= read -r p; do
+            case "$p" in
+              README.md|SECURITY.md) ;;
+              .github/*) ;;
+              scripts/install-relay.sh) ;;
+              scripts/install-relay-macos.sh) ;;
+              scripts/install-relay-windows.ps1) ;;
+              scripts/deploy-host.sh) ;;
+              scripts/deploy-relay2.sh) ;;
+              scripts/host_probe.py) ;;
+              scripts/soty-ws-nginx-location.conf) ;;
+              *)
+                echo "::error file=$p::path is not allowed in the public mirror"
+                fail=1
+                ;;
+            esac
+          done < <(git ls-files)
+          exit "$fail"
+
+      - name: Shell syntax
+        run: for f in scripts/*.sh; do bash -n "$f"; done
+
+      - name: Python syntax
+        run: python3 -m py_compile scripts/host_probe.py

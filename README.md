@@ -1,5 +1,9 @@
 # Soty (DTM) — E2EE-мессенджер без сервера
 
+[![Repository invariants](https://github.com/slavabars/soty/actions/workflows/invariants.yml/badge.svg)](https://github.com/slavabars/soty/actions/workflows/invariants.yml)
+[![Latest release](https://img.shields.io/github/v/release/slavabars/soty?label=release)](https://github.com/slavabars/soty/releases)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/slavabars/soty-app/blob/main/LICENSE)
+
 Soty — децентрализованный текстовый мессенджер с end-to-end шифрованием.
 Устройства общаются напрямую: офлайн — через mesh (BLE / Wi-Fi Direct), онлайн —
 через libp2p. Аккаунтов и центрального сервера нет. Релейные хосты

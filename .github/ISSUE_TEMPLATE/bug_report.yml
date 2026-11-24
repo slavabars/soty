@@ -1,0 +1,39 @@
+name: Bug report
+description: A relay installer or deploy script failed
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not report security problems here.** Use the private advisory link
+        from `SECURITY.md`. Never paste keys or envelope contents.
+  - type: input
+    id: version
+    attributes:
+      label: dtm_host version
+      description: "hostVersion from /status, format X.Y.Z+N"
+      placeholder: "1.7.18+36"
+    validations:
+      required: true
+  - type: dropdown
+    id: script
+    attributes:
+      label: Installer
+      options:
+        - scripts/install-relay.sh
+        - scripts/install-relay-macos.sh
+        - scripts/install-relay-windows.ps1
+        - scripts/deploy-host.sh
+        - scripts/deploy-relay2.sh
+        - scripts/host_probe.py
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Redact IP addresses, keys and paths before pasting.
+      render: text
+    validations:
+      required: true
