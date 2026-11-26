@@ -319,6 +319,27 @@ powershell -ExecutionPolicy Bypass -File .\install-relay-windows.ps1 -Announce w
 
 3. Update **both** nodes, otherwise they drift apart on the protocol version, and verify each one with `host_probe.py` / `--check`.
 
+## Router relay (OpenWrt)
+
+Every release carries `dtm_relay-X.Y.Z+N-ipk.tar.gz` — packages for OpenWrt 24.10+ routers (musl): `aarch64_cortex-a53`, `arm_cortex-a7_neon-vfpv4`, `mips_24kc`, `mipsel_24kc`, `x86_64`. The archive holds five `.ipk` files, `SHA256SUMS` and `README.txt`. It is a LAN relay and tracker, not a replacement for the server-side `dtm_host`: it serves its own network, opens no outbound connections by default and speaks the same protocol.
+
+**Back up the router first.** `sysupgrade -b` plus an overlay copy; installing without a verified backup is not acceptable. Never delete `/etc/dtm-relay/identity`: clients pin it.
+
+```sh
+tar -xzf dtm_relay-X.Y.Z+N-ipk.tar.gz
+sha256sum -c SHA256SUMS
+opkg install dtm_relay_X.Y.Z+N-1_aarch64_cortex-a53.ipk
+
+uci set dtm_relay.relay.enabled='1'
+uci set dtm_relay.relay.port='3100'
+uci commit dtm_relay
+/etc/init.d/dtm_relay enable
+/etc/init.d/dtm_relay start
+logread | grep 'soty://host'
+```
+
+Open the `soty://host?...` invite from the log on a device or send it to a contact. The port is meant for the LAN; do not forward `ws://` to the internet without `wss://` (nginx). Federation is opt-in via the `federation` option and seed URLs, off by default. Build and UCI reference: [`soty-relay/relay-owrt`](https://github.com/slavabars/soty-relay/tree/public/relay-owrt).
+
 ## Operations and security
 
 - Do not delete `host.db`: it holds the Ed25519 key and history. Losing the database means `IDENTITY CHANGED` and invalid pins on every client.

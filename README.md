@@ -319,6 +319,27 @@ powershell -ExecutionPolicy Bypass -File .\install-relay-windows.ps1 -Announce w
 
 3. Обновите **оба** узла, иначе они разойдутся по версии протокола, и проверьте каждый через `host_probe.py` / `--check`.
 
+## Роутер-релей (OpenWrt)
+
+В каждом релизе есть `dtm_relay-X.Y.Z+N-ipk.tar.gz` — пакеты для роутеров на OpenWrt 24.10+ (musl): `aarch64_cortex-a53`, `arm_cortex-a7_neon-vfpv4`, `mips_24kc`, `mipsel_24kc`, `x86_64`. Внутри пять `.ipk`, `SHA256SUMS` и `README.txt`. Это LAN-релей и трекер, а не замена серверному `dtm_host`: он обслуживает свою сеть, по умолчанию не открывает исходящих соединений и публикует тот же протокол.
+
+**Сначала сделайте бекап роутера.** `sysupgrade -b` и копия overlay; установка без проверенного бекапа недопустима. Ключ `/etc/dtm-relay/identity` нельзя удалять — клиенты пиннят его.
+
+```sh
+tar -xzf dtm_relay-X.Y.Z+N-ipk.tar.gz
+sha256sum -c SHA256SUMS
+opkg install dtm_relay_X.Y.Z+N-1_aarch64_cortex-a53.ipk
+
+uci set dtm_relay.relay.enabled='1'
+uci set dtm_relay.relay.port='3100'
+uci commit dtm_relay
+/etc/init.d/dtm_relay enable
+/etc/init.d/dtm_relay start
+logread | grep 'soty://host'
+```
+
+Приглашение `soty://host?...` из лога откройте на устройстве или отправьте контакту. Порт рассчитан на LAN; не пробрасывайте `ws://` в интернет без `wss://` (nginx). Федерация включается опцией `federation` и seed-адресами, по умолчанию выключена. Инструкция по сборке и UCI: [`soty-relay/relay-owrt`](https://github.com/slavabars/soty-relay/tree/public/relay-owrt).
+
 ## Эксплуатация и безопасность
 
 - Не удаляйте `host.db`: в нём Ed25519-ключ и история. Потеря базы = `IDENTITY CHANGED` и недействительные пины у всех клиентов.
