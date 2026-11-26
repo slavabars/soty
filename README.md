@@ -338,7 +338,7 @@ uci commit dtm_relay
 logread | grep 'soty://host'
 ```
 
-Приглашение `soty://host?...` из лога откройте на устройстве или отправьте контакту. Порт рассчитан на LAN; не пробрасывайте `ws://` в интернет без `wss://` (nginx). Федерация включается опцией `federation` и seed-адресами, по умолчанию выключена. Инструкция по сборке и UCI: [`soty-relay/relay-owrt`](https://github.com/slavabars/soty-relay/tree/public/relay-owrt).
+Приглашение `soty://host?...` из лога откройте на устройстве или отправьте контакту. Порт рассчитан на LAN; не пробрасывайте `ws://` в интернет без `wss://` (nginx). Федерация включается опцией `federation` и seed-адресами, по умолчанию выключена. Инструкция по сборке и UCI: [`soty-relay/relay-owrt`](https://github.com/slavabars/soty-relay/tree/main/relay-owrt).
 
 ## Эксплуатация и безопасность
 

@@ -338,7 +338,7 @@ uci commit dtm_relay
 logread | grep 'soty://host'
 ```
 
-Open the `soty://host?...` invite from the log on a device or send it to a contact. The port is meant for the LAN; do not forward `ws://` to the internet without `wss://` (nginx). Federation is opt-in via the `federation` option and seed URLs, off by default. Build and UCI reference: [`soty-relay/relay-owrt`](https://github.com/slavabars/soty-relay/tree/public/relay-owrt).
+Open the `soty://host?...` invite from the log on a device or send it to a contact. The port is meant for the LAN; do not forward `ws://` to the internet without `wss://` (nginx). Federation is opt-in via the `federation` option and seed URLs, off by default. Build and UCI reference: [`soty-relay/relay-owrt`](https://github.com/slavabars/soty-relay/tree/main/relay-owrt).
 
 ## Operations and security
 
